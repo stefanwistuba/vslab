@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableCircuitBreaker
 @EnableEurekaClient
 @EnableHystrixDashboard
-@RibbonClient("category-product-composite")
+@RibbonClient("category-product-composite-service")
 public class CategoryProductCompositeServiceApplication {
 	@Bean
 	public RestTemplate restTemplate() {
