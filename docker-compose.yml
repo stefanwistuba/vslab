@@ -1,0 +1,49 @@
+version: '3.2'
+services:
+    mysql_categories:
+        container_name: mysql_categories
+        environment:
+            MYSQL_ROOT_PASSWORD: admin
+            MYSQL_DATABASE: webshop
+            MYSQL_USER: shop
+            MYSQL_PASSWORD: shop
+        image: mysql:latest
+        volumes:
+            - './.mysql-data/db/categories:/var/lib/mysql'
+        restart: always
+    category_service:
+        container_name: category_service
+        build:
+            dockerfile: Dockerfile
+            context: ./category-service
+        links:
+            - mysql_categories
+        depends_on:
+            - mysql_categories
+    mysql_products:
+        container_name: mysql_products
+        environment:
+            MYSQL_ROOT_PASSWORD: admin
+            MYSQL_DATABASE: webshop
+            MYSQL_USER: shop
+            MYSQL_PASSWORD: shop
+        image: mysql:latest
+        volumes:
+            - './.mysql-data/db/products:/var/lib/mysql'
+        restart: always
+    product_service:
+        container_name: product_service
+        build:
+            dockerfile: Dockerfile
+            context: ./product-service
+        links:
+            - mysql_products
+        depends_on:
+            - mysql_products
+    eureka-server:
+        container_name: eureka-server
+        build:
+            dockerfile: Dockerfile
+            context: ./eureka-server
+        ports:
+            - '8761:8761'

@@ -1,0 +1,22 @@
+spring:
+    application:
+        name: product-service
+    datasource:
+        url: jdbc:mysql://mysql_products:3306/webshop
+        username: shop
+        password: shop
+        driver-class-name: com.mysql.jdbc.Driver
+    jpa:
+        show-sql: true
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        hibernate:
+            ddl-auto: create-drop
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://eureka-server:8761/eureka/
+        instance:
+            preferIpAddress: true
+            leaseRenewalIntervalInSeconds: 5
+            metadataMap:
+                instanceId: '${spring.application.name}:${random.value}'
