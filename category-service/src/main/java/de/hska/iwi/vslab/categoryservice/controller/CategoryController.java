@@ -25,7 +25,7 @@ public class CategoryController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/category/{categoryID}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{categoryID}", method = RequestMethod.GET)
     public ResponseEntity<Category> getCategory(@PathVariable Long categoryID) {
         if (!repo.existsById(categoryID)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -35,7 +35,7 @@ public class CategoryController {
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/category/{categoryID}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{categoryID}", method = RequestMethod.DELETE)
     public ResponseEntity<Category> deleteCategory(@PathVariable Long categoryID) {
         if (!repo.existsById(categoryID)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

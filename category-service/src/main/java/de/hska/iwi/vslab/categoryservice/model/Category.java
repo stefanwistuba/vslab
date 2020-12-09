@@ -4,10 +4,8 @@ package de.hska.iwi.vslab.categoryservice.model;
 public class Category {
 	@javax.persistence.Id
 	@javax.persistence.GeneratedValue
-	@javax.persistence.Column(name = "USER_ID")
 	private Long id;
 
-	@javax.persistence.Column(name = "CATEGORY_NAME")
 	private String name;
 
 	public Long getId() {

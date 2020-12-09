@@ -1,6 +1,6 @@
 spring:
     application:
-        name: category-product-composite
+        name: category-product-composite-service
 eureka:
     client:
         serviceUrl:

@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3'
 services:
     mysql_categories:
         container_name: mysql_categories
@@ -40,6 +40,34 @@ services:
             - mysql_products
         depends_on:
             - mysql_products
+    mysql_users_roles:
+        container_name: mysql_users_roles
+        environment:
+            MYSQL_ROOT_PASSWORD: admin
+            MYSQL_DATABASE: webshop
+            MYSQL_USER: shop
+            MYSQL_PASSWORD: shop
+        image: mysql:latest
+        volumes:
+            - './.mysql-data/db/user-roles:/var/lib/mysql'
+        restart: always
+    user_role_service:
+        container_name: user_role_service
+        build:
+            dockerfile: Dockerfile
+            context: ./user-role-service
+        links:
+            - mysql_users_roles
+        depends_on:
+            - mysql_users_roles
+    category_product_composite_service:
+        container_name: category_product_composite_service
+        build:
+            dockerfile: Dockerfile
+            context: ./category-product-composite-service
+        depends_on:
+            - product_service
+            - category_service
     eureka-server:
         container_name: eureka-server
         build:
@@ -47,3 +75,12 @@ services:
             context: ./eureka-server
         ports:
             - '8761:8761'
+    zuul:
+        container_name: zuul
+        build:
+            dockerfile: Dockerfile
+            context: ./zuul
+        ports:
+            - '8080:8081'
+        depends_on:
+            - eureka-server

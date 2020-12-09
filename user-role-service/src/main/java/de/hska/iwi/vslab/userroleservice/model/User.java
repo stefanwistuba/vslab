@@ -5,29 +5,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import de.hska.iwi.vslab.userroleservice.model.Role;
-
 @Entity
 public class User {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue
-    @javax.persistence.Column(name = "USER_ID")
     private Long id;
-
-    @javax.persistence.Column(name = "USER_FIRSTNAME")
     private String firstName;
-
-    @javax.persistence.Column(name = "USER_LASTNAME")
     private String lastName;
-
-    @javax.persistence.Column(name = "USER_USERNAME")
     private String userName;
-
-    @javax.persistence.Column(name = "USER_PWD")
     private String password;
-
-    @javax.persistence.Column(name = "USER_ROLE")
-    private Role role;
+    private int role;
 
     public Long getId() {
         return id;
@@ -69,11 +56,11 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(int role) {
         this.role = role;
     }
 }

@@ -1,6 +1,10 @@
 server:
     port: 8081
 eureka:
+    client:
+        fetchRegistry: true
+        serviceUrl:
+            defaultZone: http://eureka-server:8761/eureka/
     instance:
         leaseRenewalIntervalInSeconds: 10
         statusPageUrlPath: /info
@@ -8,8 +12,12 @@ eureka:
 zuul:
     ignoredServices: '*'
     routes:
+        users:
+            path: /user/**
+            serviceId: user-role-service
         products:
-            path: /
-
-        user: /user/**
-        products-service: /products/**
+            path: /products/**
+            serviceId: category-product-composite-service
+        categories:
+            path: /categories/**
+            serviceId: category-product-composite-service
