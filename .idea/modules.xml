@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/category-product-composite-service/category-product-composite-service.iml" filepath="$PROJECT_DIR$/category-product-composite-service/category-product-composite-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/category-service/category-service.iml" filepath="$PROJECT_DIR$/category-service/category-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/product-service/product-service.iml" filepath="$PROJECT_DIR$/product-service/product-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-role-service/user-role-service.iml" filepath="$PROJECT_DIR$/user-role-service/user-role-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/vslab.iml" filepath="$PROJECT_DIR$/.idea/vslab.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zuul/zuul.iml" filepath="$PROJECT_DIR$/zuul/zuul.iml" />
+    </modules>
+  </component>
+</project>
