@@ -1,5 +1,8 @@
 package de.hska.iwi.vslab.productservice.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import de.hska.iwi.vslab.productservice.dao.ProductRepo;
 import de.hska.iwi.vslab.productservice.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +17,34 @@ public class ProductServiceController {
     private ProductRepo repo;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Product>> getProducts() {
-        Iterable<Product> products = repo.findAll();
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(value = "searchString", required = false) String searchString,
+            @RequestParam(value = "min", required = false) Double min,
+            @RequestParam(value = "max", required = false) Double max) {
+        Iterable<Product> productsList = repo.findAll();
 
-        return new ResponseEntity<Iterable<Product>>(products, HttpStatus.OK);
+        List<Product> products = new ArrayList<Product>();
+        for (Product prod : productsList) {
+            products.add(prod);
+        }
+
+        if (searchString != null) {
+            products = products.stream().filter((Product p) -> {
+                return p.name.equals(searchString);
+            }).collect(Collectors.toList());
+        }
+        if (min != null) {
+            products = products.stream().filter((Product product) -> {
+                return product.price >= min;
+            }).collect(Collectors.toList());
+        }
+        if (max != null) {
+            products = products.stream().filter((Product product) -> {
+                return product.price <= max;
+            }).collect(Collectors.toList());
+        }
+
+        return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
@@ -52,8 +79,7 @@ public class ProductServiceController {
             return true;
         }
 
-        if (!productPrice.matches("[0-9]+(.[0-9][0-9]?)?")
-                || Double.parseDouble(productPrice) < 0.0) {
+        if (!productPrice.matches("[0-9]+(.[0-9][0-9]?)?") || Double.parseDouble(productPrice) < 0.0) {
             return true;
         }
 

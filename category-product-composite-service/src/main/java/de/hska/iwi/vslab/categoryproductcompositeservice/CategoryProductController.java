@@ -1,5 +1,6 @@
 package de.hska.iwi.vslab.categoryproductcompositeservice;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,8 @@ public class CategoryProductController {
     private CategoryProductClient client;
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Product>> getProducts() {
-        Iterable<Product> allProducts = client.getProducts();
+    public ResponseEntity<List<Product>> getProducts() {
+        List<Product> allProducts = client.getProducts();
         return new ResponseEntity<>(allProducts, HttpStatus.OK);
     }
 

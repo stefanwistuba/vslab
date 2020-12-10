@@ -1,11 +1,8 @@
 package de.hska.iwi.vslab.categoryproductcompositeservice;
 
-import java.io.Serializable;
 import de.hska.iwi.vslab.categoryproductcompositeservice.Category;
 
-public class Product implements Serializable {
-    private static final long serialVersionUID = 1L;
-
+public class Product {
     public Long id;
     public String name;
     public double price;

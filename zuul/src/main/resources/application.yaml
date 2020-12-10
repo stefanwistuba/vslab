@@ -5,7 +5,10 @@ eureka:
         fetchRegistry: true
         serviceUrl:
             defaultZone: http://eureka-server:8761/eureka/
+        healthCheck:
+            enabled: true
     instance:
+        prefer-ip-address: true
         leaseRenewalIntervalInSeconds: 10
         statusPageUrlPath: /info
         healthCheckUrlPath: /health
@@ -15,9 +18,11 @@ zuul:
         users:
             path: /user/**
             serviceId: user-role-service
-        products:
-            path: /products/**
+        category_product:
+            path: /cmp/**
             serviceId: category-product-composite-service
-        categories:
-            path: /categories/**
-            serviceId: category-product-composite-service
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'

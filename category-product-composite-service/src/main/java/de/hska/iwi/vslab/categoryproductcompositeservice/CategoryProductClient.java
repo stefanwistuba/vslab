@@ -3,6 +3,7 @@ package de.hska.iwi.vslab.categoryproductcompositeservice;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,8 @@ public class CategoryProductClient {
     // @HystrixCommand(fallbackMethod = "getProductsCache", commandProperties = {
     // @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     // })
-    public Iterable<Product> getProducts() {
-        Iterable<Product> tmpProducts = restTemplate.getForObject("http://product-service:8080/", Iterable.class);
+    public List<Product> getProducts() {
+        List<Product> tmpProducts = restTemplate.getForObject("http://product-service:8080/", List.class);
         // productsCache = tmpProducts;
         return tmpProducts;
     }

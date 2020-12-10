@@ -13,6 +13,11 @@ public class UserController {
     @Autowired
     private UserRepository repo;
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String testGet() {
+        return "Test";
+    }
+
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<?> addUser(@RequestBody User user) {
         user = repo.save(user);
