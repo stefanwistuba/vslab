@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableCircuitBreaker
 @EnableDiscoveryClient
-@EnableHystrixDashboard
 @RibbonClient("category-product-composite-service")
 public class CategoryProductCompositeServiceApplication {
 	@LoadBalanced

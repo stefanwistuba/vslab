@@ -12,6 +12,3 @@ eureka:
             leaseRenewalIntervalInSeconds: 5
             metadataMap:
                 instanceId: '${spring.application.name}:${random.value}'
-hystrix:
-    dashboard:
-        proxy-stream-allow-list: '*'
