@@ -45,9 +45,15 @@ public class CategoryProductClient {
     @HystrixCommand(fallbackMethod = "getProductCache", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2") })
     public Product getProduct(Long productId) {
-        Product tmpProduct = restTemplate.getForObject("http://product-service:8080/" + productId, Product.class);
-        productCache.putIfAbsent(productId, tmpProduct);
-        return tmpProduct;
+        Product pr = restTemplate.getForObject("http://product-service:8080/" + productId, Product.class);
+        Category cat = getCategory(pr.categoryId);
+        if (cat.getId() != null || cat.getName() != null) {
+            pr.setCategoryName(cat.getName());
+        } else {
+            pr.setCategoryName(cat.getName());
+        }
+        productCache.putIfAbsent(productId, pr);
+        return pr;
     }
 
     // @HystrixCommand(fallbackMethod = "getProductsCache", commandProperties = {

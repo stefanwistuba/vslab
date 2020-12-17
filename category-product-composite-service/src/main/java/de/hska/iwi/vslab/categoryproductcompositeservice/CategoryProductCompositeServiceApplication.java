@@ -10,10 +10,12 @@ import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboar
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 
 @SpringBootApplication
 @EnableCircuitBreaker
 @EnableDiscoveryClient
+@EnableHystrixDashboard
 @RibbonClient("category-product-composite-service")
 public class CategoryProductCompositeServiceApplication {
 	@LoadBalanced
