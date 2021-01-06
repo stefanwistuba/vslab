@@ -1,12 +1,16 @@
 package de.hska.iwi.vslab.categoryservice.model;
 
-@javax.persistence.Entity
-public class Category {
-	@javax.persistence.Id
-	@javax.persistence.GeneratedValue
-	private Long id;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
 
-	private String name;
+@Entity
+public class Category {
+	@Id
+	@GeneratedValue
+	public Long id;
+
+	public String name;
 
 	public Long getId() {
 		return id;
@@ -22,5 +26,9 @@ public class Category {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String toString() {
+		return ("id: " + this.id + " name: " + this.name);
 	}
 }

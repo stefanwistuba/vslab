@@ -2,7 +2,7 @@ package de.hska.iwi.vslab.categoryproductcompositeservice;
 
 import org.springframework.web.client.RestTemplate;
 
-import java.util.LinkedHashMap;
+// import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +17,10 @@ import de.hska.iwi.vslab.categoryproductcompositeservice.Product;
 
 @Component
 public class CategoryProductClient {
-    private final Map<Long, Category> categoryCache = new LinkedHashMap<Long, Category>();
-    private final Map<Long, Product> productCache = new LinkedHashMap<Long, Product>();
+    // private final Map<Long, Category> categoryCache = new LinkedHashMap<Long,
+    // Category>();
+    // private final Map<Long, Product> productCache = new LinkedHashMap<Long,
+    // Product>();
 
     // private final Iterable<Category> categoriesCache;
     // private final Iterable<Product> productsCache;
@@ -26,9 +28,9 @@ public class CategoryProductClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    public Product getProductCache(Long productId) {
-        return productCache.getOrDefault(productId, new Product());
-    }
+    // public Product getProductCache(Long productId) {
+    // return productCache.getOrDefault(productId, new Product());
+    // }
 
     // public Iterable<Product> getProductsCache() {
     // return productsCache;
@@ -38,21 +40,21 @@ public class CategoryProductClient {
     // return categoriesCache;
     // }
 
-    public Category getCategoryCache(Long categoryId) {
-        return categoryCache.getOrDefault(categoryId, new Category());
-    }
+    // public Category getCategoryCache(Long categoryId) {
+    // return categoryCache.getOrDefault(categoryId, new Category());
+    // }
 
-    @HystrixCommand(fallbackMethod = "getProductCache", commandProperties = {
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2") })
+    // @HystrixCommand(fallbackMethod = "getProductCache", commandProperties = {
+    // @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    // })
     public Product getProduct(Long productId) {
         Product pr = restTemplate.getForObject("http://product-service:8080/" + productId, Product.class);
         Category cat = getCategory(pr.categoryId);
         if (cat.getId() != null || cat.getName() != null) {
             pr.setCategoryName(cat.getName());
-        } else {
-            pr.setCategoryName(cat.getName());
         }
-        productCache.putIfAbsent(productId, pr);
+
+        // productCache.putIfAbsent(productId, pr);
         return pr;
     }
 
@@ -61,30 +63,33 @@ public class CategoryProductClient {
     // })
     public List<Product> getProducts() {
         List<Product> tmpProducts = restTemplate.getForObject("http://product-service:8080/", List.class);
+        tmpProducts.forEach(pr -> {
+            Category cat = getCategory(pr.categoryId);
+            if (cat.getId() != null || cat.getName() != null) {
+                pr.setCategoryName(cat.getName());
+            }
+        });
+
         // productsCache = tmpProducts;
         return tmpProducts;
     }
 
-    @HystrixCommand(fallbackMethod = "getCategoryCache", commandProperties = {
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2") })
+    // @HystrixCommand(fallbackMethod = "getCategoryCache", commandProperties = {
+    // @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    // })
     public Category getCategory(Long categoryId) {
         Category tmpCategory = restTemplate.getForObject("http://category-service:8080/" + categoryId, Category.class);
-        categoryCache.putIfAbsent(categoryId, tmpCategory);
+        // categoryCache.putIfAbsent(categoryId, tmpCategory);
         return tmpCategory;
     }
 
     // @HystrixCommand(fallbackMethod = "getCategoriesCache", commandProperties = {
     // @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     // })
-    public Iterable<Category> getCategories() {
-        Iterable<Category> tmpCategorys = restTemplate.getForObject("http://category-service:8080/", Iterable.class);
+    public List<Category> getCategories() {
+        List<Category> tmpCategorys = restTemplate.getForObject("http://category-service:8080/", List.class);
         // categoriesCache = tmpCategorys;
         return tmpCategorys;
-    }
-
-    public Product addProduct(Product product) {
-        Product tmpProduct = restTemplate.postForObject("http://product-service:8080/", product, Product.class);
-        return tmpProduct;
     }
 
     public void deleteProduct(Long productId) {
@@ -95,10 +100,17 @@ public class CategoryProductClient {
         }
     }
 
-    public void deleteCategory(Long categoryId) {
+    public String deleteCategory(Long categoryId) {
         try {
+            List<Product> productList = restTemplate
+                    .getForObject("http://product-service:8080/?categoryId=" + categoryId, List.class);
+
+            if (productList.size() > 0) {
+                return null;
+            }
+
             restTemplate.delete("http://category-service:8080/" + categoryId);
-            // Delete Products
+            return "deleted";
         } catch (Exception e) {
             throw e;
         }
@@ -108,4 +120,14 @@ public class CategoryProductClient {
         Category tmpCategory = restTemplate.postForObject("http://category-service:8080/", category, Category.class);
         return tmpCategory;
     }
+
+    public Product addProduct(Product product) {
+        Category cat = getCategory(product.categoryId);
+        if (cat == null) {
+            return null;
+        }
+        Product tmpProduct = restTemplate.postForObject("http://product-service:8080/", product, Product.class);
+        return tmpProduct;
+    }
+
 }

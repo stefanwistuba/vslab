@@ -21,6 +21,12 @@ zuul:
         category_product:
             path: /cmp/**
             serviceId: category-product-composite-service
+        category:
+            path: /cat/**
+            serviceId: category-service
+        product:
+            path: /prod/**
+            serviceId: product-service
 management:
     endpoints:
         web:

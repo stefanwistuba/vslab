@@ -20,7 +20,8 @@ public class ProductServiceController {
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(value = "searchString", required = false) String searchString,
             @RequestParam(value = "min", required = false) Double min,
-            @RequestParam(value = "max", required = false) Double max) {
+            @RequestParam(value = "max", required = false) Double max,
+            @RequestParam(value = "categoryId", required = false) Long categoryId) {
         Iterable<Product> productsList = repo.findAll();
 
         List<Product> products = new ArrayList<Product>();
@@ -30,7 +31,7 @@ public class ProductServiceController {
 
         if (searchString != null) {
             products = products.stream().filter((Product p) -> {
-                return p.name.equals(searchString);
+                return p.name.contains(searchString);
             }).collect(Collectors.toList());
         }
         if (min != null) {
@@ -44,25 +45,37 @@ public class ProductServiceController {
             }).collect(Collectors.toList());
         }
 
+        if (categoryId != null) {
+            products = products.stream().filter((Product product) -> {
+                return product.categoryId == categoryId;
+            }).collect(Collectors.toList());
+        }
+
         return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<?> addProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
         if (invalidProduct(product)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         product = repo.save(product);
 
-        return new ResponseEntity<>(product.id, HttpStatus.CREATED);
+        return new ResponseEntity<Product>(product, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Product> getProduct(@PathVariable(required = true, name = "id") long id) {
+        Product product = repo.findById(id).get();
+        return new ResponseEntity<Product>(product, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteProduct(@PathVariable(required = true, name = "id") long id) {
-        Product product = repo.findById(id).get();
-        if (product == null) {
+        if (!repo.existsById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        Product product = repo.findById(id).get();
         repo.delete(product);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -1,6 +1,7 @@
 package de.hska.iwi.vslab.categoryservice.dao;
 
 import de.hska.iwi.vslab.categoryservice.model.Category;
+import org.springframework.data.repository.CrudRepository;
 
-public interface CategoryRepository extends org.springframework.data.repository.CrudRepository<Category, Long> {
+public interface CategoryRepository extends CrudRepository<Category, Long> {
 }

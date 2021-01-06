@@ -2,6 +2,8 @@ package de.hska.iwi.vslab.categoryservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import java.util.List;
+import java.util.ArrayList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +16,15 @@ public class CategoryController {
     private CategoryRepository repo;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Category>> getCategories() {
+    public ResponseEntity<List<Category>> getCategories() {
         Iterable<Category> allPolls = repo.findAll();
-        return new ResponseEntity<>(allPolls, HttpStatus.OK);
+
+        List<Category> categories = new ArrayList<Category>();
+        for (Category cat : allPolls) {
+            categories.add(cat);
+        }
+
+        return new ResponseEntity<List<Category>>(categories, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)

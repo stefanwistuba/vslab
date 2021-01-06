@@ -27,18 +27,36 @@ public class CategoryProductController {
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public ResponseEntity<?> addProduct(@RequestBody Product product) {
         product = client.addProduct(product);
+        if (product == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/products/{productID}", method = RequestMethod.GET)
+    public ResponseEntity<Product> getProduct(@PathVariable Long productID) {
+        Product result = client.getProduct(productID);
+        return new ResponseEntity<Product>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/products/{productID}", method = RequestMethod.DELETE)
+    public ResponseEntity<Category> deleteProduct(@PathVariable Long productID) {
+        client.deleteProduct(productID);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Category>> getCategories() {
-        Iterable<Category> allCategories = client.getCategories();
+    public ResponseEntity<List<Category>> getCategories() {
+        List<Category> allCategories = client.getCategories();
         return new ResponseEntity<>(allCategories, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/categories/{categoryID}", method = RequestMethod.DELETE)
     public ResponseEntity<Category> deleteCategory(@PathVariable Long categoryID) {
-        client.deleteCategory(categoryID);
+        String result = client.deleteCategory(categoryID);
+        if (result == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

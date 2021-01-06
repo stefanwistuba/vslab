@@ -9,25 +9,13 @@ import javax.persistence.GenerationType;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     public Long id;
+
     public String name;
-    public double price;
+    public Long price;
     public Long categoryId;
     public String details;
-
-    public Product(String name, double price, Long categoryId, String details) {
-        this.name = name;
-        this.price = price;
-        this.categoryId = categoryId;
-        this.details = details;
-    }
-
-    public Product(String name, double price, Long categoryId) {
-        this.name = name;
-        this.price = price;
-        this.categoryId = categoryId;
-    }
 
     public Long getId() {
         return id;
@@ -45,19 +33,19 @@ public class Product {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
-    public Long getCategoryIy() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryIy(Long categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -67,5 +55,9 @@ public class Product {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public String toString() {
+        return ("id: " + this.id + " name: " + this.name +" price: " + this.price  + " category: " + this.categoryId + " details: " + this.details );
     }
 }

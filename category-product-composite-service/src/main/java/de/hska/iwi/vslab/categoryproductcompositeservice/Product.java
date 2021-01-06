@@ -1,45 +1,17 @@
 package de.hska.iwi.vslab.categoryproductcompositeservice;
 
-import de.hska.iwi.vslab.categoryproductcompositeservice.Category;
-import java.io.Serializable;
-
-public class Product implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Product {
 
     public Long id;
+
     public String name;
-    public double price;
+    public Long price;
     public Long categoryId;
     public String details;
     public String categoryName;
 
-    public Product() {
-
-    }
-
-    public Product(String name, double price, Long categoryId) {
-        this.name = name;
-        this.price = price;
-        this.categoryId = categoryId;
-    }
-
-    public Product(String name, double price, Long categoryId, String details) {
-        this.name = name;
-        this.price = price;
-        this.categoryId = categoryId;
-        this.details = details;
-    }
-
     public Long getId() {
         return id;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
     }
 
     public void setId(Long id) {
@@ -54,19 +26,19 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
-    public Long getCategoryIy() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryIy(Long categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -76,5 +48,18 @@ public class Product implements Serializable {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public String toString() {
+        return ("id: " + this.id + " name: " + this.name + " price: " + this.price + " category: " + this.categoryId
+                + " details: " + this.details);
+    }
+
+    public void setCategoryName(String name) {
+        this.categoryName = name;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
     }
 }

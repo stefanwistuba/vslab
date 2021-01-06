@@ -1,19 +1,9 @@
 package de.hska.iwi.vslab.categoryproductcompositeservice;
 
-import java.io.Serializable;
+public class Category {
+    public Long id;
 
-public class Category implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    private Long id;
-    private String name;
-
-    public Category() {
-    }
-
-    public Category(String name) {
-        this.name = name;
-    }
+    public String name;
 
     public Long getId() {
         return id;
@@ -29,5 +19,9 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String toString() {
+        return ("id: " + this.id + " name: " + this.name);
     }
 }
