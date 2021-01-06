@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.http.ResponseEntity;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 
@@ -61,17 +62,31 @@ public class CategoryProductClient {
     // @HystrixCommand(fallbackMethod = "getProductsCache", commandProperties = {
     // @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
     // })
-    public List<Product> getProducts() {
-        List<Product> tmpProducts = restTemplate.getForObject("http://product-service:8080/", List.class);
-        tmpProducts.forEach(pr -> {
+    public Product[] getProducts(String searchString, Double min, Double max) {
+        String urlString = "http://product-service:8080/?";
+
+        if (searchString != null) {
+            urlString += "searchString=" + searchString + "&";
+        }
+        if (min != null) {
+            urlString += "min=" + min + "&";
+        }
+        if (max != null) {
+            urlString += "max=" + max;
+        }
+
+        ResponseEntity<Product[]> response = restTemplate.getForEntity(urlString, Product[].class);
+        Product[] products = response.getBody();
+
+        for (Product pr : products) {
             Category cat = getCategory(pr.categoryId);
             if (cat.getId() != null || cat.getName() != null) {
                 pr.setCategoryName(cat.getName());
             }
-        });
+        }
 
         // productsCache = tmpProducts;
-        return tmpProducts;
+        return products;
     }
 
     // @HystrixCommand(fallbackMethod = "getCategoryCache", commandProperties = {
@@ -122,12 +137,13 @@ public class CategoryProductClient {
     }
 
     public Product addProduct(Product product) {
-        Category cat = getCategory(product.categoryId);
-        if (cat == null) {
-            return null;
+        try {
+            Category cat = getCategory(product.categoryId);
+            Product tmpProduct = restTemplate.postForObject("http://product-service:8080/", product, Product.class);
+            return tmpProduct;
+        } catch (Exception e) {
+            throw e;
         }
-        Product tmpProduct = restTemplate.postForObject("http://product-service:8080/", product, Product.class);
-        return tmpProduct;
     }
 
 }

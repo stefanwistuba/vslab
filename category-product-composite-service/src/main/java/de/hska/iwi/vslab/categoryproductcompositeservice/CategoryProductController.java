@@ -13,9 +13,12 @@ public class CategoryProductController {
     private CategoryProductClient client;
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public ResponseEntity<List<Product>> getProducts() {
-        List<Product> allProducts = client.getProducts();
-        return new ResponseEntity<>(allProducts, HttpStatus.OK);
+    public ResponseEntity<Product[]> getProducts(
+            @RequestParam(value = "searchString", required = false) String searchString,
+            @RequestParam(value = "min", required = false) Double min,
+            @RequestParam(value = "max", required = false) Double max) {
+        Product[] allProducts = client.getProducts(searchString, min, max);
+        return new ResponseEntity<Product[]>(allProducts, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/categories", method = RequestMethod.POST)
@@ -26,11 +29,12 @@ public class CategoryProductController {
 
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public ResponseEntity<?> addProduct(@RequestBody Product product) {
-        product = client.addProduct(product);
-        if (product == null) {
+        try {
+            product = client.addProduct(product);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/products/{productID}", method = RequestMethod.GET)
@@ -41,8 +45,12 @@ public class CategoryProductController {
 
     @RequestMapping(value = "/products/{productID}", method = RequestMethod.DELETE)
     public ResponseEntity<Category> deleteProduct(@PathVariable Long productID) {
-        client.deleteProduct(productID);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        try {
+            client.deleteProduct(productID);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
@@ -53,10 +61,14 @@ public class CategoryProductController {
 
     @RequestMapping(value = "/categories/{categoryID}", method = RequestMethod.DELETE)
     public ResponseEntity<Category> deleteCategory(@PathVariable Long categoryID) {
-        String result = client.deleteCategory(categoryID);
-        if (result == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        try {
+            String result = client.deleteCategory(categoryID);
+            if (result == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

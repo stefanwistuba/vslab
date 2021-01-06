@@ -18,15 +18,17 @@ zuul:
         users:
             path: /user/**
             serviceId: user-role-service
-        category_product:
-            path: /cmp/**
-            serviceId: category-product-composite-service
+        # category_product:
+        #     path: /cmp/**
+        #     serviceId: category-product-composite-service
         category:
-            path: /cat/**
-            serviceId: category-service
+            path: /categories/**
+            serviceId: category-product-composite-service
+            stripPrefix: false
         product:
-            path: /prod/**
-            serviceId: product-service
+            path: /products/**
+            serviceId: category-product-composite-service
+            stripPrefix: false
 management:
     endpoints:
         web:

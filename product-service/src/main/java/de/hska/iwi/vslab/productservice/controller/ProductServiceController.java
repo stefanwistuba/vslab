@@ -17,7 +17,7 @@ public class ProductServiceController {
     private ProductRepo repo;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<Product[]> getProducts(
             @RequestParam(value = "searchString", required = false) String searchString,
             @RequestParam(value = "min", required = false) Double min,
             @RequestParam(value = "max", required = false) Double max,
@@ -51,7 +51,9 @@ public class ProductServiceController {
             }).collect(Collectors.toList());
         }
 
-        return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+        Product[] productsArray = products.toArray(new Product[0]);
+
+        return new ResponseEntity<Product[]>(productsArray, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
