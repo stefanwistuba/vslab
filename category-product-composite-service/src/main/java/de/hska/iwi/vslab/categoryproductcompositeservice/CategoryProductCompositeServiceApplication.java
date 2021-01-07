@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 
+//localhost:8088/actuator/hystrix.stream
 @SpringBootApplication
 @EnableCircuitBreaker
 @EnableDiscoveryClient

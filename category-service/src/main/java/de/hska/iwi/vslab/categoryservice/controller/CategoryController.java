@@ -16,7 +16,7 @@ public class CategoryController {
     private CategoryRepository repo;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<List<Category>> getCategories() {
+    public ResponseEntity<Category[]> getCategories() {
         Iterable<Category> allPolls = repo.findAll();
 
         List<Category> categories = new ArrayList<Category>();
@@ -24,7 +24,9 @@ public class CategoryController {
             categories.add(cat);
         }
 
-        return new ResponseEntity<List<Category>>(categories, HttpStatus.OK);
+        Category[] categoriesArray = categories.toArray(new Category[0]);
+
+        return new ResponseEntity<Category[]>(categoriesArray, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)

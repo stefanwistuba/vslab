@@ -54,9 +54,15 @@ public class CategoryProductController {
     }
 
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
-    public ResponseEntity<List<Category>> getCategories() {
-        List<Category> allCategories = client.getCategories();
+    public ResponseEntity<Category[]> getCategories() {
+        Category[] allCategories = client.getCategories();
         return new ResponseEntity<>(allCategories, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/categories/{categoryId}", method = RequestMethod.GET)
+    public ResponseEntity<Category> getCategory(@PathVariable Long categoryId) {
+        Category result = client.getCategory(categoryId);
+        return new ResponseEntity<Category>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/categories/{categoryID}", method = RequestMethod.DELETE)
