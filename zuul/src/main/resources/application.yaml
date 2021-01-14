@@ -16,7 +16,7 @@ zuul:
     ignoredServices: '*'
     routes:
         users:
-            path: /user/**
+            path: /users/**
             serviceId: user-role-service
         # category_product:
         #     path: /cmp/**

@@ -98,12 +98,14 @@ public class CategoryProductClient {
         ResponseEntity<Product[]> response = restTemplate.getForEntity(urlString, Product[].class);
         Product[] products = response.getBody();
 
+        productCache.clear();
+
         for (Product pr : products) {
             Category cat = getCategory(pr.categoryId);
             if (cat.getId() != null || cat.getName() != null) {
                 pr.setCategoryName(cat.getName());
             }
-            productCache.putIfAbsent(pr.getId(), pr);
+            productCache.put(pr.getId(), pr);
         }
 
         return products;
