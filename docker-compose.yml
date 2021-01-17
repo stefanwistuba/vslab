@@ -77,6 +77,11 @@ services:
             context: ./eureka-server
         ports:
             - '8761:8761'
+    auth:
+        container_name: auth
+        build:
+            dockerfile: Dockerfile
+            context: ./auth
     zuul:
         container_name: zuul
         build:
