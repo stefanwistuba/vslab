@@ -50,7 +50,7 @@ public class AuthServerSecurityConfiguration extends WebSecurityConfigurerAdapte
     @SuppressWarnings("deprecation")
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("strong-secret:D");
+        converter.setSigningKey("strong-secret");
         return converter;
     }
 

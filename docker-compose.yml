@@ -1,45 +1,45 @@
 version: '3'
 services:
-    mysql_categories:
-        container_name: mysql_categories
-        environment:
-            MYSQL_ROOT_PASSWORD: admin
-            MYSQL_DATABASE: webshop
-            MYSQL_USER: shop
-            MYSQL_PASSWORD: shop
-        image: mysql:latest
-        volumes:
-            - './.mysql-data/db/categories:/var/lib/mysql'
-        restart: always
-    category_service:
-        container_name: category_service
-        build:
-            dockerfile: Dockerfile
-            context: ./category-service
-        links:
-            - mysql_categories
-        depends_on:
-            - mysql_categories
-    mysql_products:
-        container_name: mysql_products
-        environment:
-            MYSQL_ROOT_PASSWORD: admin
-            MYSQL_DATABASE: webshop
-            MYSQL_USER: shop
-            MYSQL_PASSWORD: shop
-        image: mysql:latest
-        volumes:
-            - './.mysql-data/db/products:/var/lib/mysql'
-        restart: always
-    product_service:
-        container_name: product_service
-        build:
-            dockerfile: Dockerfile
-            context: ./product-service
-        links:
-            - mysql_products
-        depends_on:
-            - mysql_products
+    # mysql_categories:
+    #     container_name: mysql_categories
+    #     environment:
+    #         MYSQL_ROOT_PASSWORD: admin
+    #         MYSQL_DATABASE: webshop
+    #         MYSQL_USER: shop
+    #         MYSQL_PASSWORD: shop
+    #     image: mysql:latest
+    #     volumes:
+    #         - './.mysql-data/db/categories:/var/lib/mysql'
+    #     restart: always
+    # category_service:
+    #     container_name: category_service
+    #     build:
+    #         dockerfile: Dockerfile
+    #         context: ./category-service
+    #     links:
+    #         - mysql_categories
+    #     depends_on:
+    #         - mysql_categories
+    # mysql_products:
+    #     container_name: mysql_products
+    #     environment:
+    #         MYSQL_ROOT_PASSWORD: admin
+    #         MYSQL_DATABASE: webshop
+    #         MYSQL_USER: shop
+    #         MYSQL_PASSWORD: shop
+    #     image: mysql:latest
+    #     volumes:
+    #         - './.mysql-data/db/products:/var/lib/mysql'
+    #     restart: always
+    # product_service:
+    #     container_name: product_service
+    #     build:
+    #         dockerfile: Dockerfile
+    #         context: ./product-service
+    #     links:
+    #         - mysql_products
+    #     depends_on:
+    #         - mysql_products
     mysql_users_roles:
         container_name: mysql_users_roles
         environment:
@@ -51,25 +51,25 @@ services:
         volumes:
             - './.mysql-data/db/user-roles:/var/lib/mysql'
         restart: always
-    user_role_service:
-        container_name: user_role_service
-        build:
-            dockerfile: Dockerfile
-            context: ./user-role-service
-        links:
-            - mysql_users_roles
-        depends_on:
-            - mysql_users_roles
-    category-product-composite-service:
-        container_name: category-product-composite-service
-        build:
-            dockerfile: Dockerfile
-            context: ./category-product-composite-service
-        depends_on:
-            - product_service
-            - category_service
-        ports:
-            - '8088:8088'
+    # user_role_service:
+    #     container_name: user_role_service
+    #     build:
+    #         dockerfile: Dockerfile
+    #         context: ./user-role-service
+    #     links:
+    #         - mysql_users_roles
+    #     depends_on:
+    #         - mysql_users_roles
+    # category-product-composite-service:
+    #     container_name: category-product-composite-service
+    #     build:
+    #         dockerfile: Dockerfile
+    #         context: ./category-product-composite-service
+    #     depends_on:
+    #         - product_service
+    #         - category_service
+    #     ports:
+    #         - '8088:8088'
     eureka-server:
         container_name: eureka-server
         build:
@@ -77,17 +77,23 @@ services:
             context: ./eureka-server
         ports:
             - '8761:8761'
+    # zuul:
+    #     container_name: zuul
+    #     build:
+    #         dockerfile: Dockerfile
+    #         context: ./zuul
+    #     ports:
+    #         - '8080:8081'
+    #     depends_on:
+    #         - eureka-server
     auth:
         container_name: auth
         build:
             dockerfile: Dockerfile
             context: ./auth
-    zuul:
-        container_name: zuul
-        build:
-            dockerfile: Dockerfile
-            context: ./zuul
         ports:
-            - '8080:8081'
+            - '8090:8088'
+        links:
+            - mysql_users_roles
         depends_on:
-            - eureka-server
+            - mysql_users_roles

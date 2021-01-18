@@ -3,6 +3,16 @@ server:
 spring:
     application:
         name: auth
+    datasource:
+        url: jdbc:mysql://mysql_categories:3306/webshop
+        password: shop
+        username: shop
+        driver-class-name: com.mysql.jdbc.Driver
+    jpa:
+        show-sql: true
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        hibernate:
+            ddl-auto: create-drop
 eureka:
     client:
         serviceUrl:
