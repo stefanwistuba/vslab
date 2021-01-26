@@ -11,7 +11,8 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.core.userdetails.UserDetailsService;
+import de.hska.iwi.vslab.auth.UserDetailService;
 
 @Configuration
 @EnableAuthorizationServer
@@ -30,8 +31,8 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
     private JwtAccessTokenConverter accessTokenConverter;
 
     @Autowired
-    @Qualifier("users")
-    private UserDetailsService userDetailsService;
+    @Qualifier("getUserDetailsService")
+    private UserDetailService userDetailsService;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
