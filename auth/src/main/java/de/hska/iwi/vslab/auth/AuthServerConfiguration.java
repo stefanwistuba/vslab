@@ -37,7 +37,7 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory().withClient("webshop-client").secret("{noop}strong")
                 .authorizedGrantTypes("authorization_code", "password", "refresh_token")
-                .redirectUris("http://zuul:8081/client/authorized").scopes("message.read", "message.write");
+                .scopes("message.read", "message.write");
         // PORT???
     }
 

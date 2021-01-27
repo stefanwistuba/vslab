@@ -48,4 +48,4 @@ security:
         resource:
             filter-order: 3
             jwk:
-                key-uri: http://auth:8088/oauth2/keys
+                key-set-uri: http://auth:8088/oauth2/keys

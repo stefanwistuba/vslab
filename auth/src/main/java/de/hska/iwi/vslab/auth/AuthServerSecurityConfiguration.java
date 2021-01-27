@@ -6,6 +6,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.jwt.JwtHelper;
+import org.springframework.security.jwt.crypto.sign.RsaSigner;
+import org.springframework.security.jwt.crypto.sign.RsaVerifier;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.util.JsonParser;
+import org.springframework.security.oauth2.common.util.JsonParserFactory;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
@@ -22,9 +29,13 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.KeyUse;
+
+import de.hska.iwi.vslab.auth.KeyConfig;
 
 @EnableWebSecurity
 public class AuthServerSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -47,10 +58,29 @@ public class AuthServerSecurityConfiguration extends WebSecurityConfigurerAdapte
     }
 
     @Bean
-    @SuppressWarnings("deprecation")
     public JwtAccessTokenConverter accessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("strong-secret");
+        final RsaSigner signer = new RsaSigner(KeyConfig.getSignerKey());
+
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter() {
+            private JsonParser objectMapper = JsonParserFactory.create();
+
+            @Override
+            protected String encode(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+                String content;
+                try {
+                    content = this.objectMapper
+                            .formatMap(getAccessTokenConverter().convertAccessToken(accessToken, authentication));
+                } catch (Exception ex) {
+                    throw new IllegalStateException("Cannot convert access token to JSON", ex);
+                }
+                Map<String, String> headers = new HashMap<>();
+                headers.put("kid", KeyConfig.VERIFIER_KEY_ID);
+                String token = JwtHelper.encode(content, signer, headers).getEncoded();
+                return token;
+            }
+        };
+        converter.setSigner(signer);
+        converter.setVerifier(new RsaVerifier(KeyConfig.getVerifierKey()));
         return converter;
     }
 
@@ -61,13 +91,9 @@ public class AuthServerSecurityConfiguration extends WebSecurityConfigurerAdapte
     }
 
     @Bean
-    public JWKSet jwkSet() throws NoSuchAlgorithmException {
-        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
-        gen.initialize(2048);
-        KeyPair keyPair = gen.generateKeyPair();
-
-        RSAKey.Builder jwk = new RSAKey.Builder((RSAPublicKey) keyPair.getPublic()).keyUse(KeyUse.SIGNATURE)
-                .algorithm(JWSAlgorithm.RS256).keyID("key-id");
-        return new JWKSet(jwk.build());
+    public JWKSet jwkSet() {
+        RSAKey.Builder builder = new RSAKey.Builder(KeyConfig.getVerifierKey()).keyUse(KeyUse.SIGNATURE)
+                .algorithm(JWSAlgorithm.RS256).keyID(KeyConfig.VERIFIER_KEY_ID);
+        return new JWKSet(builder.build());
     }
 }
