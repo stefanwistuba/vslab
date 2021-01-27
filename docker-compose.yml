@@ -51,15 +51,15 @@ services:
         volumes:
             - './.mysql-data/db/user-roles:/var/lib/mysql'
         restart: always
-    user_role_service:
-        container_name: user_role_service
-        build:
-            dockerfile: Dockerfile
-            context: ./user-role-service
-        links:
-            - mysql_users_roles
-        depends_on:
-            - mysql_users_roles
+    # user_role_service:
+    #     container_name: user_role_service
+    #     build:
+    #         dockerfile: Dockerfile
+    #         context: ./user-role-service
+    #     links:
+    #         - mysql_users_roles
+    #     depends_on:
+    #         - mysql_users_roles
     # category-product-composite-service:
     #     container_name: category-product-composite-service
     #     build:

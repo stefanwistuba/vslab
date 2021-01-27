@@ -1,6 +1,5 @@
 package de.hska.iwi.vslab.auth;
 
-import de.hska.iwi.vslab.auth.UserDetailService;
 import com.nimbusds.jose.jwk.JWK;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -55,20 +54,14 @@ public class AuthServerSecurityConfiguration extends WebSecurityConfigurerAdapte
         return converter;
     }
 
-    // @Bean
-    // @SuppressWarnings("deprecation")
-    // public UserDetailsService users() {
-    // UserBuilder users = User.withDefaultPasswordEncoder();
-    // InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-    // manager.createUser(users.username("user").password("password").roles("USER").build());
-    // manager.createUser(users.username("admin").password("password").roles("USER",
-    // "ADMIN").build());
-    // return manager;
-    // }
-
     @Bean
-    public UserDetailService getUserDetailsService() {
-        return new UserDetailService();
+    @SuppressWarnings("deprecation")
+    public UserDetailsService users() {
+        UserBuilder users = User.withDefaultPasswordEncoder();
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+        manager.createUser(users.username("user").password("password").roles("USER").build());
+        manager.createUser(users.username("admin").password("password").roles("USER", "ADMIN").build());
+        return manager;
     }
 
     @Bean
