@@ -20,8 +20,6 @@ services:
             - mysql_categories
         depends_on:
             - mysql_categories
-        ports:
-            - '8091:8080'
     mysql_products:
         container_name: mysql_products
         environment:
