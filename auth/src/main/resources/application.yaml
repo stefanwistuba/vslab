@@ -22,3 +22,8 @@ eureka:
             leaseRenewalIntervalInSeconds: 5
             metadataMap:
                 instanceId: '${spring.application.name}:${random.value}'
+security:
+    oauth2:
+        client:
+            client-id: webshop-client
+            client-secret: strong

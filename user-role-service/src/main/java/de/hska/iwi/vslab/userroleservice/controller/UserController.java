@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.ArrayList;
 
 @RestController
@@ -40,13 +41,13 @@ public class UserController {
         return new ResponseEntity<User>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
-    public ResponseEntity<User> getUser(@PathVariable Long userId) {
-        if (!repo.existsById(userId)) {
+    @RequestMapping(value = "/{userName}", method = RequestMethod.GET)
+    public ResponseEntity<User> getUser(@PathVariable String userName) {
+        User user = repo.findByUserName(userName);
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        User user = repo.findById(userId).get();
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
