@@ -13,6 +13,10 @@ eureka:
         statusPageUrlPath: /info
         healthCheckUrlPath: /health
 zuul:
+    sensitive-headers:
+        - Cookie
+        - Set-Cookie
+        - WWW-Authenticate
     ignoredServices: '*'
     routes:
         users:
@@ -29,11 +33,19 @@ zuul:
             path: /products/**
             serviceId: category-product-composite-service
             stripPrefix: false
+        auth:
+            sensitive-headers:
+                - Authorization,Cookie,Set-Cookie
+            path: /auth/**
+            stripPrefix: false
 management:
     endpoints:
         web:
             exposure:
                 include: '*'
-hystrix:
-    dashboard:
-        proxy-stream-allow-list: '*'
+security:
+    oauth2:
+        resource:
+            filter-order: 3
+            jwk:
+                key-uri: http://auth:8088/oauth2/keys

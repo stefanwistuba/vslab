@@ -20,26 +20,28 @@ services:
             - mysql_categories
         depends_on:
             - mysql_categories
-    mysql_products:
-        container_name: mysql_products
-        environment:
-            MYSQL_ROOT_PASSWORD: admin
-            MYSQL_DATABASE: webshop
-            MYSQL_USER: shop
-            MYSQL_PASSWORD: shop
-        image: mysql:latest
-        volumes:
-            - './.mysql-data/db/products:/var/lib/mysql'
-        restart: always
-    product_service:
-        container_name: product_service
-        build:
-            dockerfile: Dockerfile
-            context: ./product-service
-        links:
-            - mysql_products
-        depends_on:
-            - mysql_products
+        ports:
+            - '8091:8080'
+    # mysql_products:
+    #     container_name: mysql_products
+    #     environment:
+    #         MYSQL_ROOT_PASSWORD: admin
+    #         MYSQL_DATABASE: webshop
+    #         MYSQL_USER: shop
+    #         MYSQL_PASSWORD: shop
+    #     image: mysql:latest
+    #     volumes:
+    #         - './.mysql-data/db/products:/var/lib/mysql'
+    #     restart: always
+    # product_service:
+    #     container_name: product_service
+    #     build:
+    #         dockerfile: Dockerfile
+    #         context: ./product-service
+    #     links:
+    #         - mysql_products
+    #     depends_on:
+    #         - mysql_products
     mysql_users_roles:
         container_name: mysql_users_roles
         environment:
@@ -60,16 +62,16 @@ services:
             - mysql_users_roles
         depends_on:
             - mysql_users_roles
-    category-product-composite-service:
-        container_name: category-product-composite-service
-        build:
-            dockerfile: Dockerfile
-            context: ./category-product-composite-service
-        depends_on:
-            - product_service
-            - category_service
-        ports:
-            - '8088:8088'
+    # category-product-composite-service:
+    #     container_name: category-product-composite-service
+    #     build:
+    #         dockerfile: Dockerfile
+    #         context: ./category-product-composite-service
+    #     depends_on:
+    #         - product_service
+    #         - category_service
+    #     ports:
+    #         - '8088:8088'
     eureka-server:
         container_name: eureka-server
         build:

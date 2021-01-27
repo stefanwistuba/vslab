@@ -13,12 +13,13 @@ public class UserDetailService implements UserDetailsService {
     @Autowired
     private RestTemplate restTemplate;
 
-
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = restTemplate.getForObject("http://user-role-service:8080/" + username, User.class);
         if (user == null) {
             throw new UsernameNotFoundException("User " + username + " not found.");
         }
+
+        user.setPassword("{noop}" + user.getPassword());
 
         return user;
     }
