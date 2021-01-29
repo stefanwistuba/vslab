@@ -37,7 +37,7 @@ zuul:
             sensitive-headers:
                 - Authorization,Cookie,Set-Cookie
             path: /auth/**
-            stripPrefix: false
+            # serviceId: auth
 management:
     endpoints:
         web:

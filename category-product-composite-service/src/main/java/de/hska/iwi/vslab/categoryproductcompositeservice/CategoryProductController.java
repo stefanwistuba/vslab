@@ -31,7 +31,7 @@ public class CategoryProductController {
     public ResponseEntity<?> addProduct(@RequestBody Product product) {
         try {
             product = client.addProduct(product);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(product, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

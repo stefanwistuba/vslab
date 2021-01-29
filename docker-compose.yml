@@ -94,3 +94,9 @@ services:
             context: ./auth
         ports:
             - '8090:8088'
+    webshop:
+        build:
+            dockerfile: Dockerfile
+            context: ./hska-vis-legacy
+        ports:
+            - '8888:8080'
