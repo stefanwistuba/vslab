@@ -12,12 +12,13 @@ import java.util.Map;
 
 public class CategoryManagerImpl implements CategoryManager {
 	private RestTemplate restTemplate = new RestTemplate();
+	private final String categoryUrl = "http://zuul:8081/categories";
 
 	public CategoryManagerImpl() {
 	}
 
 	public List<Category> getCategories() {
-		ResponseEntity<Category[]> response = this.restTemplate.exchange("http://zuul:8081/categories", HttpMethod.GET,
+		ResponseEntity<Category[]> response = this.restTemplate.exchange(categoryUrl, HttpMethod.GET,
 				getRequestEntity(), Category[].class);
 		if (response.getStatusCode() == HttpStatus.OK) {
 			return Arrays.asList(response.getBody());
@@ -27,8 +28,8 @@ public class CategoryManagerImpl implements CategoryManager {
 	}
 
 	public Category getCategory(int id) {
-		ResponseEntity<Category> response = this.restTemplate.exchange("http://zuul:8081/categories/" + id,
-				HttpMethod.GET, getRequestEntity(), Category.class);
+		ResponseEntity<Category> response = this.restTemplate.exchange(categoryUrl + "/" + id, HttpMethod.GET,
+				getRequestEntity(), Category.class);
 		if (response.getStatusCode() == HttpStatus.OK) {
 			return response.getBody();
 		} else {
@@ -38,8 +39,8 @@ public class CategoryManagerImpl implements CategoryManager {
 
 	// TODO
 	public Category getCategoryByName(String name) {
-		ResponseEntity<Category> response = this.restTemplate.exchange("http://zuul:8081/categories/name/" + name,
-				HttpMethod.GET, getRequestEntity(), Category.class);
+		ResponseEntity<Category> response = this.restTemplate.exchange(categoryUrl + "/name/" + name, HttpMethod.GET,
+				getRequestEntity(), Category.class);
 		if (response.getStatusCode() == HttpStatus.OK) {
 			return response.getBody();
 		} else {
@@ -49,18 +50,18 @@ public class CategoryManagerImpl implements CategoryManager {
 
 	public void addCategory(String name) {
 		Category cat = new Category(name);
-		ResponseEntity<Void> response = this.restTemplate.exchange("http://zuul:8081/categories", HttpMethod.POST,
+		ResponseEntity<Void> response = this.restTemplate.exchange(categoryUrl, HttpMethod.POST,
 				getRequestEntityWithBody(cat), Void.class);
 	}
 
 	public void delCategory(Category cat) { // this method is not needed
-		ResponseEntity<Boolean> response = this.restTemplate.exchange("http://zuul:8081/categories/" + cat.getId(),
+		ResponseEntity<Boolean> response = this.restTemplate.exchange(categoryUrl + "/" + cat.getId(),
 				HttpMethod.DELETE, getRequestEntity(), Boolean.class);
 	}
 
 	public void delCategoryById(int id) {
-		ResponseEntity<Boolean> response = this.restTemplate.exchange("http://zuul:8081/categories/" + id,
-				HttpMethod.DELETE, getRequestEntity(), Boolean.class);
+		ResponseEntity<Boolean> response = this.restTemplate.exchange(categoryUrl + "/" + id, HttpMethod.DELETE,
+				getRequestEntity(), Boolean.class);
 	}
 
 	public HttpEntity getRequestEntity() {

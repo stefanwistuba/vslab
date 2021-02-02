@@ -25,11 +25,6 @@ public class User {
     public User() {
     }
 
-    public boolean isEmptyObject() {
-        return (this.firstName == null && this.lastName == null && this.userName == null && this.password == null
-                && this.role == null && this.id == null);
-    }
-
     public Long getId() {
         return id;
     }

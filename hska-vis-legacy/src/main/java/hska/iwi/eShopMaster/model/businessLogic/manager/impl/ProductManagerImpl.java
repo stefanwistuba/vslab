@@ -10,13 +10,14 @@ import java.util.*;
 
 public class ProductManagerImpl implements ProductManager {
 	private RestTemplate restTemplate = new RestTemplate();
+	private final String productUrl = "http://zuul:8081/products";
 
 	public ProductManagerImpl() {
 	}
 
 	public List<Product> getProducts() {
-		ResponseEntity<Product[]> response = this.restTemplate.exchange("http://zuul:8081/products", HttpMethod.GET,
-				getRequestEntity(), Product[].class);
+		ResponseEntity<Product[]> response = this.restTemplate.exchange(productUrl, HttpMethod.GET, getRequestEntity(),
+				Product[].class);
 		if (response.getStatusCode() == HttpStatus.OK) {
 			return Arrays.asList(response.getBody());
 		} else {
@@ -25,7 +26,7 @@ public class ProductManagerImpl implements ProductManager {
 	}
 
 	public List<Product> getProductsForSearchValues(String searchString, Double min, Double max) {
-		String urlString = "http://zuul:8081/products?";
+		String urlString = productUrl + "?";
 
 		if (searchString != null) {
 			urlString += "searchString=" + searchString + "&";
@@ -47,7 +48,7 @@ public class ProductManagerImpl implements ProductManager {
 	}
 
 	public Product getProductById(Long id) {
-		ResponseEntity<Product> response = this.restTemplate.exchange("http://zuul:8081/products/" + id, HttpMethod.GET,
+		ResponseEntity<Product> response = this.restTemplate.exchange(productUrl + "/" + id, HttpMethod.GET,
 				getRequestEntity(), Product.class);
 		if (response.getStatusCode() == HttpStatus.OK) {
 			return response.getBody();
@@ -70,7 +71,7 @@ public class ProductManagerImpl implements ProductManager {
 			product = new Product(name, price, categoryId, details);
 		}
 
-		ResponseEntity<Product> response = this.restTemplate.exchange("http://zuul:8081/products", HttpMethod.POST,
+		ResponseEntity<Product> response = this.restTemplate.exchange(productUrl, HttpMethod.POST,
 				getRequestEntityWithBody(product), Product.class);
 		if (response.getStatusCode() == HttpStatus.CREATED) {
 			Product createdProduct = response.getBody();
@@ -81,8 +82,8 @@ public class ProductManagerImpl implements ProductManager {
 	}
 
 	public boolean deleteProductById(Long id) {
-		ResponseEntity<Boolean> response = this.restTemplate.exchange("http://zuul:8081/products/" + id,
-				HttpMethod.DELETE, getRequestEntity(), Boolean.class);
+		ResponseEntity<Boolean> response = this.restTemplate.exchange(productUrl + "/" + id, HttpMethod.DELETE,
+				getRequestEntity(), Boolean.class);
 		if (response.getStatusCode() == HttpStatus.OK) {
 			if (response.getBody()) {
 				return true;

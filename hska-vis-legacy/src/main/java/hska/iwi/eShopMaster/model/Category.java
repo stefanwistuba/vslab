@@ -5,20 +5,12 @@ public class Category {
     private Long id;
     private String name;
 
-
     public Category(String name) {
         this.name = name;
     }
 
     public Category() {
 
-    }
-
-    public boolean isEmptyObject() {
-        return (
-                this.id == null
-                        && this.name == null
-        );
     }
 
     public Long getId() {

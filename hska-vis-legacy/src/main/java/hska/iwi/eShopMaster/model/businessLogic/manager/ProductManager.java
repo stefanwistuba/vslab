@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ProductManager {
 
+	public HttpEntity getRequestEntity();
+
 	public List<Product> getProducts();
 
 	public Product getProductById(Long id);
@@ -16,12 +18,9 @@ public interface ProductManager {
 	public Long addProduct(String name, double price, Long categoryId, String details);
 
 	public List<Product> getProductsForSearchValues(String searchValue, Double searchMinPrice, Double searchMaxPrice);
-	
-	public boolean deleteProductsByCategoryId(int categoryId);
-	
-    public boolean deleteProductById(Long id);
 
-    public HttpEntity getRequestEntity();
-    
-	
+	public boolean deleteProductsByCategoryId(int categoryId);
+
+	public boolean deleteProductById(Long id);
+
 }

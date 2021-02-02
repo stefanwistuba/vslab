@@ -19,16 +19,6 @@ public class Product {
     public Product() {
     }
 
-    public boolean isEmptyObject() {
-        return (
-                this.id == null
-                        && this.name == null
-                        && this.price == null
-                        && this.categoryId == null
-                        && this.details == null
-        );
-    }
-
     public Long getId() {
         return id;
     }
@@ -77,4 +67,3 @@ public class Product {
         this.details = details;
     }
 }
-

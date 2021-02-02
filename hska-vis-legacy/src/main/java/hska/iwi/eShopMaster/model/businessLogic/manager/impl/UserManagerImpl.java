@@ -18,6 +18,7 @@ import java.util.Map;
 public class UserManagerImpl implements UserManager {
 	private OAuth2RestTemplate webshopAuthTemplate;
 	private RestTemplate restTemplate = new RestTemplate();
+	private final String userUrl = "http://zuul:8081/users";
 
 	public UserManagerImpl() {
 	}
@@ -45,7 +46,7 @@ public class UserManagerImpl implements UserManager {
 
 	public boolean registerUser(String username, String name, String lastname, String password, Long role) {
 		User user = new User(name, lastname, username, password, role);
-		ResponseEntity<Void> response = this.restTemplate.postForEntity("http://zuul:8081/users", user, Void.class);
+		ResponseEntity<Void> response = this.restTemplate.postForEntity(userUrl, user, Void.class);
 		if (response.getStatusCode() == HttpStatus.CREATED) {
 			return true;
 		}
@@ -53,7 +54,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	public User getUserByUsername(String username) {
-		ResponseEntity<User> response = this.restTemplate.exchange("http://zuul:8081/users/" + username, HttpMethod.GET,
+		ResponseEntity<User> response = this.restTemplate.exchange(userUrl + "/" + username, HttpMethod.GET,
 				getRequestEntity(), User.class);
 		if (response.getStatusCode() == HttpStatus.OK) {
 			return response.getBody();
@@ -63,7 +64,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	public boolean deleteUserById(Long id) {
-		ResponseEntity<Boolean> response = this.restTemplate.exchange("http://zuul:8081/users/" + id, HttpMethod.DELETE,
+		ResponseEntity<Boolean> response = this.restTemplate.exchange(userUrl + "/" + id, HttpMethod.DELETE,
 				getRequestEntity(), Boolean.class);
 		if (response.getStatusCode() == HttpStatus.OK) {
 			if (response.getBody()) {
@@ -74,7 +75,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	public boolean doesUserAlreadyExist(String username) {
-		ResponseEntity<User> response = this.restTemplate.exchange("http://zuul:8081/users/" + username, HttpMethod.GET,
+		ResponseEntity<User> response = this.restTemplate.exchange(userUrl + "/" + username, HttpMethod.GET,
 				getRequestEntity(), User.class);
 		if (response.getStatusCode() == HttpStatus.OK) {
 			if (response.getBody() != null) {
