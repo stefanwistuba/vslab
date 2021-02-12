@@ -60,6 +60,8 @@ services:
             - mysql_users_roles
         depends_on:
             - mysql_users_roles
+        ports:
+            - '8889:8080'
     category-product-composite-service:
         container_name: category-product-composite-service
         build:

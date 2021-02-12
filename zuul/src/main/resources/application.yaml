@@ -49,3 +49,8 @@ security:
             filter-order: 3
             jwk:
                 key-set-uri: http://auth:8088/oauth2/keys
+logging:
+    level:
+        org:
+            springframework:
+                web: TRACE

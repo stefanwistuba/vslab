@@ -17,10 +17,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         // @formatter:off
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/users/**").permitAll()
+                // .antMatchers("/users/**").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable();
+              
         // @formatter:on
     }
 }

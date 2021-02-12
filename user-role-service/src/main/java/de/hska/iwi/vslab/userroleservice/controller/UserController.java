@@ -16,25 +16,6 @@ public class UserController {
     @Autowired
     private UserRepository repo;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login() {
-        return "Login";
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<User[]> getUsers() {
-        Iterable<User> allPolls = repo.findAll();
-
-        List<User> users = new ArrayList<User>();
-        for (User user : allPolls) {
-            users.add(user);
-        }
-
-        User[] usersArray = users.toArray(new User[0]);
-
-        return new ResponseEntity<User[]>(usersArray, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<User> addUser(@RequestBody User user) {
         user = repo.save(user);

@@ -23,12 +23,33 @@ import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-// @EnableResourceServer
-public class UserRoleServiceApplication {
+@Configuration
+@EnableAuthorizationServer
+public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
-	public static void main(String[] args) {
-		SpringApplication.run(UserRoleServiceApplication.class, args);
-	}
+    @Autowired
+    @Qualifier("authenticationManagerBean")
+    private AuthenticationManager authenticationManager;
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        endpoints.authenticationManager(authenticationManager);
+    }
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        security.checkTokenAccess("isAuthenticated()");
+    }
+
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        // @formatter:off
+			clients.inMemory()
+				.withClient("auth-client")
+					.authorizedGrantTypes("client_credentials")
+					.scopes("all")
+					.secret("{noop}strong");
+
+			// @formatter:on
+    }
 }

@@ -18,3 +18,9 @@ security:
         client:
             client-id: webshop-client
             client-secret: strong
+
+logging:
+    level:
+        org:
+            springframework:
+                web: DEBUG

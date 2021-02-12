@@ -23,12 +23,27 @@ import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-// @EnableResourceServer
-public class UserRoleServiceApplication {
+@Configuration
+@EnableWebSecurity
+public class AuthServerSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	public static void main(String[] args) {
-		SpringApplication.run(UserRoleServiceApplication.class, args);
-	}
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        // @formatter:off
+        http
+            .authorizeRequests()
+            // .antMatchers(HttpMethod.POST, "/").permitAll()
+            .antMatchers("/**").permitAll()
+            .antMatchers("/{\\dd+}").permitAll()
+            .antMatchers("/oauth/**").permitAll() 
+            .anyRequest().authenticated()
+            .and().csrf().disable();
+        // @formatter:on
+
+    }
 }
