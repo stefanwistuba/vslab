@@ -24,24 +24,30 @@ public class LoginAction extends ActionSupport {
 
 	@Override
 	public String execute() throws Exception {
-		Map<String, Object> session = ActionContext.getContext().getSession();
-
 		// Return string:
 		String result = "input";
+		Map<String, Object> session = ActionContext.getContext().getSession();
 
 		UserManager myCManager = new UserManagerImpl();
-
+		String token = "";
 		// Sende username und password an client
-		String token = myCManager.authorizeUser(getUserName(), getPassword());
-
-		System.out.println("token: " + token);
+		try {
+			token = myCManager.authorizeUser(getUserName(), getPassword());
+		} catch (Exception e) {
+			addActionError(getText("error.username.wrong"));
+			return result;
+		}
 		// Does token exist?
 		if (token != null) {
 			session.put("token", token);
+			try {
+				User user = myCManager.getUserByUsername(getUserName());
+				session.put("webshop_user", user);
 
-			User user = myCManager.getUserByUsername(getUserName());
-			session.put("webshop_user", user);
-
+			} catch (Exception e) {
+				addActionError(getText("error.username.wrong"));
+				return result;
+			}
 			result = "success";
 		} else {
 			addActionError(getText("error.username.wrong"));

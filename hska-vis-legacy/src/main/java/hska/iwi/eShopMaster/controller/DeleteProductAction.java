@@ -18,23 +18,28 @@ public class DeleteProductAction extends ActionSupport {
 	private Long id;
 
 	public String execute() throws Exception {
-		
+
 		String res = "input";
-		
+
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		User user = (User) session.get("webshop_user");
-		
-		if(user != null && (user.getRole().equals(1L))) {
+
+		if (user != null && (user.getRole().equals(1L))) {
 
 			ProductManagerImpl productManager = new ProductManagerImpl();
-			boolean success = productManager.deleteProductById(id);
-			if (success){
+			boolean success = false;
+			try {
+				success = productManager.deleteProductById(id);
+			} catch (Exception e) {
+				addActionError(getText("error.products.delete"));
+			}
+			if (success) {
 				res = "success";
 			}
 		}
-		
+
 		return res;
-		
+
 	}
 
 	public Long getId() {

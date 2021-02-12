@@ -11,7 +11,7 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ProductDetailsAction extends ActionSupport {
-	
+
 	private User user;
 	private Long id;
 	private String searchValue;
@@ -27,20 +27,20 @@ public class ProductDetailsAction extends ActionSupport {
 	public String execute() throws Exception {
 
 		String res = "input";
-		
+
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		user = (User) session.get("webshop_user");
-		
-		if(user != null) {
+
+		if (user != null) {
 			ProductManager productManager = new ProductManagerImpl();
 			product = productManager.getProductById(id);
-			
-			res = "success";			
+
+			res = "success";
 		}
-		
-		return res;		
+
+		return res;
 	}
-	
+
 	public User getUser() {
 		return user;
 	}

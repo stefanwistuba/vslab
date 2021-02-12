@@ -7,11 +7,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.client.RestTemplate;
 import de.hska.iwi.vslab.auth.User;
+import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
+import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 
+@EnableOAuth2Client
 public class UserDetailService implements UserDetailsService {
 
     @Autowired
-    private RestTemplate restTemplate;
+    private OAuth2RestOperations restTemplate;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = restTemplate.getForObject("http://user-role-service:8080/" + username, User.class);

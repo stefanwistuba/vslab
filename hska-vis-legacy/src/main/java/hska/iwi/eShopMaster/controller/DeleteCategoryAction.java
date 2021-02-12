@@ -17,32 +17,36 @@ public class DeleteCategoryAction extends ActionSupport {
 	 * 
 	 */
 	private static final long serialVersionUID = 1254575994729199914L;
-	
+
 	private int catId;
 	private List<Category> categories;
 
 	public String execute() throws Exception {
-		
+
 		String res = "input";
-		
+
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		User user = (User) session.get("webshop_user");
-		
-		if(user != null && (user.getRole().equals(1L))) {
+
+		if (user != null && (user.getRole().equals(1L))) {
 
 			// Helper inserts new Category in DB:
 			CategoryManager categoryManager = new CategoryManagerImpl();
-		
-			categoryManager.delCategoryById(catId);
+
+			try {
+				categoryManager.delCategoryById(catId);
+			} catch (Exception e) {
+				addActionError(getText("error.category.products"));
+			}
 
 			categories = categoryManager.getCategories();
-				
+
 			res = "success";
 
 		}
-		
+
 		return res;
-		
+
 	}
 
 	public int getCatId() {

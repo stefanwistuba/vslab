@@ -51,8 +51,8 @@ services:
         volumes:
             - './.mysql-data/db/user-roles:/var/lib/mysql'
         restart: always
-    user_role_service:
-        container_name: user_role_service
+    user-role-service:
+        container_name: user-role-service
         build:
             dockerfile: Dockerfile
             context: ./user-role-service

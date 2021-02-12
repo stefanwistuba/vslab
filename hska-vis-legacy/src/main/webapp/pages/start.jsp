@@ -70,7 +70,8 @@
 				</h3>
 			</div>
 	
-		
+			<font color="red"> <s:actionerror />
+			</font>
 		
 		<div id="startpage_products">
 			
