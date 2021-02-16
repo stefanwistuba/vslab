@@ -35,8 +35,7 @@ public class ClientConfig {
 	@Bean
 	protected OAuth2ProtectedResourceDetails authServerClientCredentialsResourceDetails() {
 		ClientCredentialsResourceDetails resource = new ClientCredentialsResourceDetails();
-		// resource.setAccessTokenUri("http://auth:8088/oauth/token");
-		resource.setAccessTokenUri("http://user-role-service:8080/oauth/token");
+		resource.setAccessTokenUri("http://auth:8088/oauth/token");
 		resource.setClientId("auth-client");
 		resource.setId("auth-client");
 		resource.setClientSecret("secret");
