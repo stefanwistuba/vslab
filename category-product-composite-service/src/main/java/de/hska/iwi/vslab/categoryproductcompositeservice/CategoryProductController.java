@@ -44,12 +44,14 @@ public class CategoryProductController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @RequestMapping(value = "/products/{productID}", method = RequestMethod.GET)
     public ResponseEntity<Product> getProduct(@PathVariable Long productID) {
         Product result = client.getProduct(productID);
         return new ResponseEntity<Product>(result, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/products/{productID}", method = RequestMethod.DELETE)
     public ResponseEntity<Category> deleteProduct(@PathVariable Long productID) {
         try {
@@ -60,12 +62,14 @@ public class CategoryProductController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
     public ResponseEntity<Category[]> getCategories() {
         Category[] allCategories = client.getCategories();
         return new ResponseEntity<>(allCategories, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/categories/{categoryId}", method = RequestMethod.GET)
     public ResponseEntity<Category> getCategory(@PathVariable Long categoryId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -77,6 +81,7 @@ public class CategoryProductController {
         return new ResponseEntity<Category>(result, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/categories/{categoryID}", method = RequestMethod.DELETE)
     public ResponseEntity<Category> deleteCategory(@PathVariable Long categoryID) {
         try {
