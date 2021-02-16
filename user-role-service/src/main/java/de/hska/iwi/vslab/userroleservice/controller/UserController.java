@@ -42,7 +42,7 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasAuthority('UserCoreAccessName') or hasRole('ADMIN') or (hasRole('USER') and #username == principal)")
+    @PreAuthorize("hasAuthority('UserCoreAccessName') or hasRole('ADMIN') or (hasRole('USER') and #userName == principal)")
     @RequestMapping(value = "/{userName}", method = RequestMethod.GET)
     public ResponseEntity<User> getUser(@PathVariable String userName) {
         User user = repo.findByUserName(userName);
