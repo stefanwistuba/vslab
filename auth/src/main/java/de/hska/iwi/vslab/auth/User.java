@@ -63,9 +63,11 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         if (this.getRole() == 1) {
-            authorities.add(new SimpleGrantedAuthority("admin"));
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
-        authorities.add(new SimpleGrantedAuthority("user"));
+        authorities.add(new SimpleGrantedAuthority("USER"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         return authorities;
     }
 
@@ -73,13 +75,6 @@ public class User implements UserDetails {
         return password;
     }
 
-    public String getAuthRole() {
-        if (this.getRole() == 1) {
-            return "ADMIN";
-        } else {
-            return "USER";
-        }
-    }
 
     @Override
     public String getUsername() {

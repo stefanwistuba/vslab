@@ -62,17 +62,17 @@ public class CategoryProductController {
 
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
     public ResponseEntity<Category[]> getCategories() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("username " + auth.getName());
-        for (GrantedAuthority a : auth.getAuthorities()) {
-            System.out.println(a.getAuthority());
-        }
         Category[] allCategories = client.getCategories();
         return new ResponseEntity<>(allCategories, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/categories/{categoryId}", method = RequestMethod.GET)
     public ResponseEntity<Category> getCategory(@PathVariable Long categoryId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("username " + auth.getName());
+        for (GrantedAuthority a : auth.getAuthorities()) {
+            System.out.println(a.getAuthority());
+        }
         Category result = client.getCategory(categoryId);
         return new ResponseEntity<Category>(result, HttpStatus.OK);
     }
