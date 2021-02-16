@@ -26,12 +26,14 @@ public class CategoryProductController {
         return new ResponseEntity<Product[]>(allProducts, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/categories", method = RequestMethod.POST)
     public ResponseEntity<?> addCategory(@RequestBody Category category) {
         category = client.addCategory(category);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public ResponseEntity<?> addProduct(@RequestBody Product product) {
         try {
