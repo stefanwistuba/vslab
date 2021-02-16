@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 public class UserDetailService implements UserDetailsService {
 
     @Autowired
+    @Qualifier("restTemplate")
     private OAuth2RestTemplate restTemplate;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
