@@ -1,0 +1,32 @@
+eureka:
+    client:
+        instance:
+            instanceId: '${spring.application.name}:${random.value}'
+            leaseRenewalIntervalInSeconds: 5
+            preferIpAddress: true
+        serviceUrl:
+            defaultZone: http://eureka-server:8761/eureka/
+logging:
+    level:
+        org:
+            springframework:
+                web: TRACE
+spring:
+    application:
+        name: user-role-service
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        password: shop
+        url: jdbc:mysql://mysql_users_roles:3306/webshop
+        username: shop
+    jpa:
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+
+security:
+    oauth2:
+        resource:
+            jwk:
+                key-set-uri: http://auth:8088/oauth2/keys
