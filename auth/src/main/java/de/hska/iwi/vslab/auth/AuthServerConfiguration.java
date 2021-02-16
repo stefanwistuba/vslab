@@ -37,7 +37,7 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory().withClient("webshop-client").secret("{noop}strong").authorizedGrantTypes("password")
                 .scopes("read", "write");
-        // PORT???
+
     }
 
     @Override

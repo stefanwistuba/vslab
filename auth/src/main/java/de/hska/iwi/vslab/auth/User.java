@@ -62,7 +62,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        if(this.getRole() == 1) {
+        if (this.getRole() == 1) {
             authorities.add(new SimpleGrantedAuthority("admin"));
         }
         authorities.add(new SimpleGrantedAuthority("user"));
@@ -71,6 +71,14 @@ public class User implements UserDetails {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getAuthRole() {
+        if (this.getRole() == 1) {
+            return "ADMIN";
+        } else {
+            return "USER";
+        }
     }
 
     @Override

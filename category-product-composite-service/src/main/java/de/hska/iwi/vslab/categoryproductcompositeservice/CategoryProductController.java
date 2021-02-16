@@ -5,6 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 public class CategoryProductController {
@@ -12,6 +16,7 @@ public class CategoryProductController {
     @Autowired
     private CategoryProductClient client;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public ResponseEntity<Product[]> getProducts(
             @RequestParam(value = "searchString", required = false) String searchString,
@@ -55,6 +60,11 @@ public class CategoryProductController {
 
     @RequestMapping(value = "/categories", method = RequestMethod.GET)
     public ResponseEntity<Category[]> getCategories() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("username " + auth.getName());
+        for (GrantedAuthority a : auth.getAuthorities()) {
+            System.out.println(a.getAuthority());
+        }
         Category[] allCategories = client.getCategories();
         return new ResponseEntity<>(allCategories, HttpStatus.OK);
     }

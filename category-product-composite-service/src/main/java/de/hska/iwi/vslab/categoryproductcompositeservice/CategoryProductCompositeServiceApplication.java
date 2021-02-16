@@ -11,6 +11,7 @@ import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 //localhost:8088/actuator/hystrix.stream
 @SpringBootApplication
@@ -18,6 +19,7 @@ import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboar
 @EnableDiscoveryClient
 @EnableHystrixDashboard
 @RibbonClient("category-product-composite-service")
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class CategoryProductCompositeServiceApplication {
 	@LoadBalanced
 	@Bean
