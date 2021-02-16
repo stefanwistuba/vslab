@@ -21,6 +21,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.security.oauth2.provider.approval.InMemoryApprovalStore;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -54,8 +56,15 @@ public class AuthServerSecurityConfiguration extends WebSecurityConfigurerAdapte
     @Bean
     @SuppressWarnings("deprecation")
     public TokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
+        JwtTokenStore tokenStore = new JwtTokenStore(accessTokenConverter());
+		tokenStore.setApprovalStore(approvalStore());
+		return tokenStore;
     }
+
+    @Bean
+	public ApprovalStore approvalStore() {
+		return new InMemoryApprovalStore();
+	}
 
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
