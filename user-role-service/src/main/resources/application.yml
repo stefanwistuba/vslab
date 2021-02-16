@@ -11,8 +11,7 @@ logging:
     org:
       springframework:
         security:
-          web:
-            access: DEBUG
+          web: TRACE
           oauth2: DEBUG
         web:
           client:

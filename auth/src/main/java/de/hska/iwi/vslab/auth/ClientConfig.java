@@ -31,10 +31,17 @@ public class ClientConfig {
 		return new OAuth2RestTemplate(resourceDetails);
 	}
 
-	@ConfigurationProperties(prefix = "security.oauth2.client.auth-server-client-credentials")
+
 	@Bean
-	public OAuth2ProtectedResourceDetails authServerClientCredentialsResourceDetails() {
-		return new ClientCredentialsResourceDetails();
+	protected OAuth2ProtectedResourceDetails authServerClientCredentialsResourceDetails() {
+		ClientCredentialsResourceDetails resource = new ClientCredentialsResourceDetails();
+		// resource.setAccessTokenUri("http://auth:8088/oauth/token");
+		resource.setAccessTokenUri("http://user-role-service:8080/oauth/token");
+		resource.setClientId("auth-client");
+		resource.setId("auth-client");
+		resource.setClientSecret("secret");
+
+		return resource;
 	}
 
 }
