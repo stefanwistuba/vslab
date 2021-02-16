@@ -7,10 +7,16 @@ eureka:
         serviceUrl:
             defaultZone: http://eureka-server:8761/eureka/
 logging:
-    level:
-        org:
-            springframework:
-                web: TRACE
+  level:
+    org:
+      springframework:
+        security:
+          web:
+            access: DEBUG
+          oauth2: DEBUG
+        web:
+          client:
+            RestTemplate: DEBUG
 spring:
     application:
         name: user-role-service
