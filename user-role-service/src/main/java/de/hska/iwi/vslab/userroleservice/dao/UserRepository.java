@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface UserRepository extends org.springframework.data.repository.CrudRepository<User, Long> {
 
     User findByUserName(String userName);
+
+    boolean existsByUserName(String userName);
 }

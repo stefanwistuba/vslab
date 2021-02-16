@@ -18,8 +18,11 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<User> addUser(@RequestBody User user) {
-        user = repo.save(user);
-        return new ResponseEntity<User>(HttpStatus.CREATED);
+        if (!repo.existsByUserName(user.getUserName())) {
+            user = repo.save(user);
+            return new ResponseEntity<User>(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @RequestMapping(value = "/{userName}", method = RequestMethod.GET)
