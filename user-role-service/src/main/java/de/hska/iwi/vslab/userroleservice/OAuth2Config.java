@@ -47,8 +47,8 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 			clients.inMemory()
 				.withClient("auth-client")
 					.authorizedGrantTypes("client_credentials")
-					.scopes("all")
-					.secret("{noop}strong");
+					.scopes("read")
+					.secret("{noop}secret");
 
 			// @formatter:on
     }

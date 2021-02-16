@@ -26,7 +26,23 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
-    @PreAuthorize("hasAuthority('auth-client') or hasRole('ADMIN') or (hasRole('USER') and #username == principal)")
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ResponseEntity<User[]> getUsers() {
+        Iterable<User> allPolls = repo.findAll();
+
+        List<User> users = new ArrayList<User>();
+        for (User user : allPolls) {
+            users.add(user);
+        }
+
+        User[] usersArray = users.toArray(new User[0]);
+
+        return new ResponseEntity<User[]>(usersArray, HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasAuthority('UserCoreAccessName') or hasRole('ADMIN') or (hasRole('USER') and #username == principal)")
     @RequestMapping(value = "/{userName}", method = RequestMethod.GET)
     public ResponseEntity<User> getUser(@PathVariable String userName) {
         User user = repo.findByUserName(userName);

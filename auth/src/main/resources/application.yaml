@@ -18,6 +18,12 @@ security:
         client:
             client-id: webshop-client
             client-secret: strong
+            auth-server-client-credentials:
+                access-token-uri: http://user-role-service:8080/oauth/token
+                client-id: auth-client
+                client-secret: secret
+                grant-type: client_credentials
+                scope: read
 
 logging:
     level:

@@ -23,6 +23,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableResourceServer

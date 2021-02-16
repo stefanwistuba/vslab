@@ -19,7 +19,6 @@ import org.springframework.security.oauth2.client.token.grant.client.ClientCrede
 @EnableDiscoveryClient
 public class AuthApplication {
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(AuthApplication.class, args);
 	}
