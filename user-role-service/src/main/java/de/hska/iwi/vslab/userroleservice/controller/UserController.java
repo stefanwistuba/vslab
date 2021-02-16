@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 public class UserController {
@@ -25,6 +26,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    @PreAuthorize("hasAuthority('auth-client') or hasRole('ADMIN') or (hasRole('USER') and #username == principal)")
     @RequestMapping(value = "/{userName}", method = RequestMethod.GET)
     public ResponseEntity<User> getUser(@PathVariable String userName) {
         User user = repo.findByUserName(userName);

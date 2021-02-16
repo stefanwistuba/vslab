@@ -19,21 +19,6 @@ import org.springframework.security.oauth2.client.token.grant.client.ClientCrede
 @EnableDiscoveryClient
 public class AuthApplication {
 
-	@Bean
-	public OAuth2RestOperations restTemplate(OAuth2ClientContext oauth2ClientContext) {
-		return new OAuth2RestTemplate(resource(), oauth2ClientContext);
-	}
-
-	@Bean
-	protected OAuth2ProtectedResourceDetails resource() {
-		ClientCredentialsResourceDetails resource = new ClientCredentialsResourceDetails();
-		resource.setAccessTokenUri("http://user-role-service:8080/oauth/token");
-		resource.setClientId("auth-client");
-		resource.setId("auth-client");
-		resource.setClientSecret("strong");
-
-		return resource;
-	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(AuthApplication.class, args);

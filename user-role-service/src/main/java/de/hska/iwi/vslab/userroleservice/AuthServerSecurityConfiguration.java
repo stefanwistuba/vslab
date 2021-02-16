@@ -34,16 +34,6 @@ public class AuthServerSecurityConfiguration extends WebSecurityConfigurerAdapte
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        // @formatter:off
-        http
-            .authorizeRequests()
-            // .antMatchers(HttpMethod.POST, "/").permitAll()
-            .antMatchers("/**").permitAll()
-            .antMatchers("/{\\dd+}").permitAll()
-            .antMatchers("/oauth/**").permitAll() 
-            .anyRequest().authenticated()
-            .and().csrf().disable();
-        // @formatter:on
-
+		http.authorizeRequests().anyRequest().authenticated();
     }
 }

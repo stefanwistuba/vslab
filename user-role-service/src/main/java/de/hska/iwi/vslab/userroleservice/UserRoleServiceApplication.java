@@ -25,7 +25,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-// @EnableResourceServer
+@EnableResourceServer
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class UserRoleServiceApplication {
 
 	public static void main(String[] args) {

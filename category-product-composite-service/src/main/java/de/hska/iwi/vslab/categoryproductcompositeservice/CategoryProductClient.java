@@ -171,6 +171,7 @@ public class CategoryProductClient {
         try {
             Category cat = getCategory(product.categoryId);
             Product tmpProduct = restTemplate.postForObject("http://product-service:8080/", product, Product.class);
+            product.setCategoryName(cat.getName());
             productCache.put(product.getId(), product);
             return tmpProduct;
         } catch (Exception e) {
