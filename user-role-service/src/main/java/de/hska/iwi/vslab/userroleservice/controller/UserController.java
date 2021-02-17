@@ -17,6 +17,7 @@ public class UserController {
     @Autowired
     private UserRepository repo;
 
+    // @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'ANONYMOUS')")
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<User> addUser(@RequestBody User user) {
         if (!repo.existsByUserName(user.getUserName())) {
@@ -40,7 +41,6 @@ public class UserController {
 
         return new ResponseEntity<User[]>(usersArray, HttpStatus.OK);
     }
-
 
     @PreAuthorize("hasAuthority('UserCoreAccessName') or hasRole('ADMIN') or (hasRole('USER') and #userName == principal)")
     @RequestMapping(value = "/{userName}", method = RequestMethod.GET)
